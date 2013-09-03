@@ -12,76 +12,50 @@ module.exports = function(grunt) {
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
-    clean: {
-      files: ['dist']
-    },
-    concat: {
-      options: {
-        banner: '<%= banner %>',
-        stripBanners: true
-      },
-      dist: {
-        src: ['js/<%= pkg.name %>.js'],
-        dest: 'dist/<%= pkg.name %>.js'
-      },
-    },
-    uglify: {
-      options: {
-        banner: '<%= banner %>'
-      },
-      dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'dist/<%= pkg.name %>.min.js'
-      },
-    },
-    qunit: {
-      files: ['test/test.html']
-    },
-    jshint: {
-      gruntfile: {
+    connect: {
+      server: {
         options: {
-          jshintrc: '.jshintrc'
-        },
-        src: 'Gruntfile.js'
-      },
-      src: {
+          port: process.env.PORT || 8000
+        }
+      }
+    },
+    sass: {
+      compile: {
         options: {
-          jshintrc: 'js/.jshintrc'
+          style: "compressed",
+          compass: true
         },
-        src: ['js/**/*.js']
-      },
-      test: {
-        options: {
-          jshintrc: 'test/.jshintrc'
-        },
-        src: ['test/test.html']
-      },
+        files: {
+          "theme/css/default.css": "theme/scss/default.scss",
+          "theme/css/phone.css": "theme/scss/phone.scss"
+        }
+      }
     },
     watch: {
-      gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
-      },
-      src: {
-        files: '<%= jshint.src.src %>',
-        tasks: ['jshint:src', 'qunit']
-      },
-      test: {
-        files: '<%= jshint.test.src %>',
-        tasks: ['jshint:test', 'qunit']
-      },
-    },
+      scripts: {
+        files: ["theme/scss/**/*.scss"],
+        tasks: ["sass:compile"],
+        options: {
+          nospawn: false
+        }
+      }
+    }
+  });
+  this.registerTask("open", function() {
+    var port = grunt.config("connect").server.options.port;
+ 
+    grunt.util.spawn({
+      cmd: require("os").platform() === "darwin" ? "open" : "xdg-open",
+      args: ["http://localhost:" + port + "/template.html"]
+    }, function() {});
   });
 
   // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks("grunt-contrib-connect");
+  grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks("grunt-contrib-sass");
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'concat', 'uglify']);
+  grunt.registerTask("serve", ["open", "connect:server", "watch"]);
 
 };

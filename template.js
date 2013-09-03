@@ -6,10 +6,10 @@
 'use strict';
 
 // Basic template description.
-exports.description = 'Create a Yixun Event Project, including QUnit unit tests.';
+exports.description = 'Create a Google IO 2012 Slides Project.';
 
 // Template-specific notes to be displayed before question prompts.
-exports.notes = 'Creating a Default Yixun Event Project...';
+exports.notes = 'Creating a Default Google IO 2012 Slides Project...';
 
 // Template-specific notes to be displayed after question prompts.
 exports.after = 'Now you can edit files in project';
@@ -24,7 +24,7 @@ exports.template = function(grunt, init, done) {
     // Prompt for these values.
     init.prompt('name'),
     init.prompt('title'),
-    init.prompt('description', 'New Yixun Event Project'),
+    init.prompt('description', 'New Google IO 2012 Slides Project'),
     init.prompt('repository'),
     init.prompt('version'),
     init.prompt('licenses', 'MIT'),
@@ -47,11 +47,9 @@ exports.template = function(grunt, init, done) {
       // TODO: pull from grunt's package.json
       node_version: '>= 0.8.0',
       devDependencies: {
-        'grunt-contrib-jshint': '~0.1.1',
-        'grunt-contrib-concat': '~0.1.2',
-        'grunt-contrib-uglify': '~0.1.1',
+        'grunt-contrib-connect': '~0.1.1',
         'grunt-contrib-watch': '~0.2.0',
-        'grunt-contrib-clean': '~0.4.0',
+        'grunt-contrib-sass': '~0.4.0',
       },
     });
 
