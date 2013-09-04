@@ -17,7 +17,7 @@ var SLIDE_CONFIG = {
       'Open Sans:regular,semibold,italic,italicsemibold',
       'Source Code Pro'
     ],
-    //theme: ['mytheme'], // Add your own custom themes or styles in /theme/css. Leave off the .css extension.
+    theme: ['default'], // Add your own custom themes or styles in /theme/css. Leave off the .css extension.
   },
 
   // Author information
